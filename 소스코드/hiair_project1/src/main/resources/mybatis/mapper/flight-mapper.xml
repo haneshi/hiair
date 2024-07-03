@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hiair_project1.repository.FlightMapper">
+<!-- 해당 파일이 MyBatis 매퍼 파일임을 나타내며, namespace 속성을 통해 매퍼 인터페이스의 경로를 지정 -->
+
+	<resultMap type="Flight" id="flightResultMap">
+	<!-- resultMap 태그: SQL 쿼리 결과로 반환된 컬럼들을 Flight 객체의 속성에 매핑하는 방법을 정의 -->
+		<result property="flightID" column="FLIGHTID" />
+		<result property="Departure" column="DEPARTURE" />
+		<result property="Destination" column="DESTINATION" />
+		<result property="DepartureTime" column="DEPARTURETIME" />
+		<result property="ArrivalTime" column="ARRIVALTIME" />
+	<!--  <result> 태그를 통해 데이터베이스 컬럼과 객체 속성 간의 매핑을 지정 -->
+	</resultMap>
+		
+	<select id="selectById" parameterType="String" resultMap="flightResultMap">
+		SELECT * FROM fli WHERE flightID=#{flightID}
+	</select>
+	<!-- FlightController에서 상세보기를 사용하기 위해 사용 -->
+	
+	<select id="selectByLimit" resultType="Flight"><!-- select * from fli -->
+		SELECT * FROM (
+			SELECT ROWNUM AS rnum, b.* 
+       	 	FROM (
+            SELECT * FROM fli
+            ORDER BY flightID DESC
+        ) b
+		  WHERE ROWNUM &lt;= #{end}
+		) WHERE rnum &gt;= #{start}	
+	<!-- FlightController에서 항공편 목록 조회를 위해 사용 -->
+	</select>
+	
+	<select id="selectBySearch" parameterType="String" resultMap="flightResultMap">
+    SELECT * FROM fli
+    WHERE DepartureTime=#{departureTime}
+    AND Destination=#{destination}
+    AND Departure=#{departure}
+	</select>
+
+</mapper>

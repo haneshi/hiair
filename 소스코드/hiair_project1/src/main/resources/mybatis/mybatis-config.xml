@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- <configuration> 태그 :  MyBatis의 동작을 제어하는 다양한 설정을 위해 사용 -->
+	<settings>
+<!-- <settings> 태그 : MyBatis의 동작을 세부적으로 제어할 수 있는 설정을 위해 사용 -->
+		<setting name="cacheEnabled" value="true"/>
+		<!-- true로 설정하면 MyBatis의 캐싱 기능이 활성화/ 캐싱은 반복적인 쿼리 실행 시 성능을 향상 -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- true로 설정하면, 데이터베이스 컬럼명에서 밑줄(underscore)을 기준으로 카멜 케이스(camelCase) 방식으로 자동 변환 -->
+		<!-- ex)user_name 컬럼은 userName 속성으로 매핑 -->
+		<setting name="defaultFetchSize" value="100" />
+		<!-- 데이터베이스에서 한 번에 가져올 행(row)의 수를 지정 -->
+		<!-- 본값은 데이터베이스 드라이버에 따라 다르며, 이 설정을 통해 성능 조정 가능 -->
+		<setting name="defaultStatementTimeout" value="30" />
+		<!-- SQL 쿼리 실행의 최대 시간(초)을 지정 -->
+		<!-- 이 시간을 초과하면 쿼리 실행이 중단 -->
+		<setting name="jdbcTypeForNull" value="VARCHAR"/>
+	</settings>
+	
+	<typeAliases>
+	<!-- flight-mapper.xml 파일 내에 parameterType이나 resultType에 패키지명을 생략을 위해 typeAliases 사용 -->
+		<package name="hiair_project1.model"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper class="hiair_project1.repository.FlightMapper"/>
+	</mappers>
+
+</configuration>

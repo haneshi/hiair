@@ -1,0 +1,65 @@
+/* 회원가입 페이지 스타일 */
+.signup {
+    margin-top: 50px;
+}
+
+.signup h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sign-group {
+    margin-bottom: 20px;
+}
+
+.sign-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.sign-group input[type="text"],
+.sign-group input[type="email"],
+.sign-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #003366;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #002244;
+}
+
+
+/* 반응형 CSS */
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
+    .reservation h2 {
+        font-size: 1.5em;
+    }
+    .reservation .input-group {
+        margin-bottom: 10px;
+    }
+    .reservation select,
+    .reservation input[type="date"] {
+        width: 80%;
+    }
+}

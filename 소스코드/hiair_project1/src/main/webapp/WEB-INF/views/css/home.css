@@ -1,0 +1,70 @@
+/* 기본 스타일 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: #003366;
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 48px;
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+main {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+}
+
+.menu a {
+    margin: 0 20px;
+    font-size: 24px;
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: #003366;
+}
+
+/* 반응형 CSS */
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
+    .reservation h2 {
+        font-size: 1.5em;
+    }
+    .reservation .input-group {
+        margin-bottom: 10px;
+    }
+    .reservation select,
+    .reservation input[type="date"] {
+        width: 80%;
+    }
+}

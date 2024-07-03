@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hiair_project1.respository.BoardMapper">
+	<resultMap type="BoardItem" id="boardResultMap">
+		<result property="subject" column="subject"/>
+		<result property="content" column="content"/>
+		<result property="name" column="name"/>
+		<result property="regDate" column="regDate"/>
+		<result property="readCount" column="readCount"/>
+	</resultMap>
+	
+	<select id="selectAll" resultType="BoardItem">
+		SELECT Seq, Subject, Content,
+		Name, reg_date, readCount
+		FROM board;
+	</select>
+	
+	
+	<!-- 문의글 작성 DB 보내는 내용 -->
+	<insert id="insertWrite" parameterType="BoardItem">
+		INSERT INTO board (Subject, Content, Name, regdate, readCount)
+		VALUES (#{subject}, #{content}, #{name}, #{regDate}, #{readCount})
+	</insert>
+	
+	
+	
+</mapper>

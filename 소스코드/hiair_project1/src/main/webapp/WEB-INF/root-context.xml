@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 외부 속성 파일(jdbc.properties)에서 정의된 속성들을 불러오는 역할 -->
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	<!-- 데이터베이스 연결을 위한 데이터 소스를 설정으로 JDBC 드라이버 클래스, URL, 사용자 이름, 비밀번호가 포함
+	 이 값들은 jdbc.properties 파일에서 가져옵니다. -->
+
+	<bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/mybatis/mapper/**/*.xml" />
+	</bean>
+	<!-- MyBatis와의 연동을 위한 SQL 세션 팩토리를 정의
+	 dataSource: 데이터 소스를 참조
+	 configLocation: MyBatis의 전역 설정 파일 위치를 지정
+	 mapperLocations: SQL 매퍼 파일들의 위치를 지정 -->
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" 
+		value="hiair_project1.repository" />
+	</bean>
+	<!-- MapperScannerConfigurer: 지정된 패키지 내의 MyBatis 매퍼 인터페이스를 스캔하여 스프링 빈으로 등록
+	 이를 통해 SQL 매퍼를 자동으로 찾아주는 기능을 활성화-->
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" 
+	      destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="SqlSessionFactory" />
+	</bean>
+	<!-- SqlSessionTemplate: MyBatis의 SqlSession을 구현한 스프링 빈으로 SQL 작업 수행
+	 destroy-method="clearCache": 빈이 제거될 때 캐시를 비우는 메서드를 호출 -->
+
+	<bean id="transactionManager" 
+	      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- DataSourceTransactionManager: 데이터 소스에 대한 트랜잭션 관리를 설정
+	  이를 통해 데이터베이스 작업의 무결성을 보장 -->
+	<!-- TransactionManager: 데이터베이스와 같은 외부 리소스를 사용할 때, 이를 관리하는 역할 -->
+	<!-- TransactionManager 사용 목적 : 오류가 발생했을 때 자동으로 롤백을 수행하여 데이터의 일관성을 유지하는 것 -->
+	
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- <tx:annotation-driven>: 이 태그를 사용하여 선언적 트랜잭션 관리를 활성화 
+	 @Transactional 어노테이션을 사용하여 특정 메서드나 클래스가 트랜잭션의 범위 안에 있음을 선언 가능-->
+</beans>

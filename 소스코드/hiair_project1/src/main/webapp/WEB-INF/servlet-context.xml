@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<annotation-driven />
+	<!-- Spring MVC에서 어노테이션 기반의 컨트롤러를 사용할 수 있다.
+	 @Controller 어노테이션이 붙은 클래스를 컨트롤러로 인식하게 해주며, 
+	 요청 매핑, 데이터 바인딩 등을 자동으로 처리 -->
+	
+	<context:component-scan base-package="hiair_project1" />
+	<!-- 지정된 패키지(hiair_project1) 아래에 있는 클래스들 중
+	@Component, @Service, @Repository, @Controller 등의 
+	어노테이션이 적용된 클래스들을 스프링 빈으로 자동 등록 -->
+
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<mvc:resources mapping="/scripts/**" location="/WEB-INF/views/scripts/" />
+	<mvc:resources mapping="/css/**" location="/WEB-INF/views/css/" />
+	<mvc:resources mapping="/flights/view/css/**" location="/css/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+	
+	<!-- 정적 리소스(이미지, 자바스크립트, CSS 파일 등)에 대한 매핑을 정의 -->
+	
+	<!-- ViewResilver : 접두어, 접미어로  컨트롤러가 리턴하는 뷰의 이름을 해석 -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 로그인 여부를 확인하기 위한 인터셉터
+	     게시판쪽으로 들어오는 요청은 로그인이 되지 않았다면 
+	     로그인 화면으로 보낸다. -->
+	<interceptors>
+		<interceptor>
+		    <mapping path="/flights/**" />
+			<beans:bean class="hiair_project1.web.interceptor.LoginInterceptor" />
+		</interceptor>
+	</interceptors>
+
+</beans:beans>
